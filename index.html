@@ -96,18 +96,6 @@
             box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
         }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        @media (max-width: 600px) {
-            .form-row {
-                grid-template-columns: 1fr;
-            }
-        }
-
         button {
             width: 100%;
             padding: 14px;
@@ -125,10 +113,6 @@
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
-        }
-
-        button:active {
-            transform: translateY(0);
         }
 
         .result {
@@ -169,9 +153,6 @@
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .result.approved .result-title { color: #2e7d32; }
@@ -182,23 +163,6 @@
             font-size: 14px;
             line-height: 1.6;
             margin-bottom: 15px;
-        }
-
-        .result.approved .result-message { color: #1b5e20; }
-        .result.pending .result-message { color: #e65100; }
-        .result.denied .result-message { color: #b71c1c; }
-
-        .result-date {
-            font-size: 12px;
-            opacity: 0.7;
-            margin-top: 10px;
-        }
-
-        .error-message {
-            color: #f44336;
-            font-size: 13px;
-            margin-top: 5px;
-            display: none;
         }
 
         .success-banner {
@@ -221,36 +185,6 @@
             color: #1565c0;
             line-height: 1.6;
         }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 20px;
-        }
-
-        .spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #ffd700;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .footer-note {
-            text-align: center;
-            font-size: 12px;
-            color: #666;
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-        }
     </style>
 </head>
 <body>
@@ -271,50 +205,22 @@
             <form id="visaCheckerForm">
                 <div class="form-group">
                     <label for="refNumber">Visa Reference Number *</label>
-                    <input 
-                        type="text" 
-                        id="refNumber" 
-                        name="refNumber" 
-                        placeholder="e.g., LM-2024-12345"
-                        required
-                    >
-                    <div class="error-message" id="refError"></div>
+                    <input type="text" id="refNumber" name="refNumber" placeholder="e.g., LM-2024-12345" required>
                 </div>
 
                 <div class="form-group">
                     <label for="fullName">Full Name *</label>
-                    <input 
-                        type="text" 
-                        id="fullName" 
-                        name="fullName" 
-                        placeholder="Enter your full name"
-                        required
-                    >
-                    <div class="error-message" id="nameError"></div>
+                    <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email Address *</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        placeholder="your@email.com"
-                        required
-                    >
-                    <div class="error-message" id="emailError"></div>
+                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Phone Number *</label>
-                    <input 
-                        type="tel" 
-                        id="phone" 
-                        name="phone" 
-                        placeholder="+44 7xxx xxxxxx"
-                        required
-                    >
-                    <div class="error-message" id="phoneError"></div>
+                    <input type="tel" id="phone" name="phone" placeholder="+44 7xxx xxxxxx" required>
                 </div>
 
                 <div class="form-group">
@@ -326,7 +232,6 @@
                         <option value="business">Business & Investor Visa</option>
                         <option value="entertainment">Entertainment Visa</option>
                     </select>
-                    <div class="error-message" id="visaTypeError"></div>
                 </div>
 
                 <div class="form-group">
@@ -346,46 +251,23 @@
                             <option value="germany">Germany</option>
                             <option value="switzerland">Switzerland</option>
                             <option value="norway">Norway</option>
-                            <option value="spain">Spain</option>
-                            <option value="netherlands">Netherlands</option>
-                            <option value="belgium">Belgium</option>
-                            <option value="austria">Austria</option>
-                            <option value="sweden">Sweden</option>
-                            <option value="denmark">Denmark</option>
-                            <option value="finland">Finland</option>
-                            <option value="poland">Poland</option>
-                            <option value="czechrepublic">Czech Republic</option>
-                            <option value="portugal">Portugal</option>
-                            <option value="greece">Greece</option>
                         </optgroup>
                     </select>
-                    <div class="error-message" id="countryError"></div>
                 </div>
 
                 <button type="submit">Check Visa Status</button>
             </form>
 
-            <div class="loading" id="loading">
-                <div class="spinner"></div>
-                <p style="margin-top: 15px; color: #001f3f;">Checking your visa status...</p>
-            </div>
-
             <div class="result" id="result"></div>
 
             <div class="info-box">
                 <strong>ℹ️ About this checker:</strong><br>
-                Enter your visa reference number to check the status of your application. Our team will contact you shortly with personalized assistance.
-            </div>
-
-            <div class="footer-note">
-                London MCS Consultants | No 67, Visa • Flight Tickets • Travel<br>
-                © 2024 All rights reserved.
+                Enter your visa reference number to check the status of your application. Our team will contact you shortly.
             </div>
         </div>
     </div>
 
     <script>
-        // Sample Visa Database (MVP)
         const visaDatabase = {
             'LM-2024-12345': { status: 'approved', message: 'Your visa application has been approved!' },
             'LM-2024-12346': { status: 'pending', message: 'Your application is currently under review.' },
@@ -394,150 +276,22 @@
             'LM-2024-12349': { status: 'pending', message: 'Documents received. Review in progress.' },
         };
 
-        const form = document.getElementById('visaCheckerForm');
-        const resultDiv = document.getElementById('result');
-        const loadingDiv = document.getElementById('loading');
-        const successBanner = document.getElementById('successBanner');
-
-        form.addEventListener('submit', async (e) => {
+        document.getElementById('visaCheckerForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
-            // Clear previous errors
-            document.querySelectorAll('.error-message').forEach(el => el.style.display = 'none');
-
-            // Get form data
-            const refNumber = document.getElementById('refNumber').value.trim();
-            const fullName = document.getElementById('fullName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
-            const visaType = document.getElementById('visaType').value;
-            const country = document.getElementById('country').value;
-
-            // Validation
-            if (!refNumber) {
-                showError('refError', 'Please enter a reference number');
-                return;
-            }
-            if (!fullName) {
-                showError('nameError', 'Please enter your full name');
-                return;
-            }
-            if (!email || !isValidEmail(email)) {
-                showError('emailError', 'Please enter a valid email address');
-                return;
-            }
-            if (!phone) {
-                showError('phoneError', 'Please enter a phone number');
-                return;
-            }
-            if (!visaType) {
-                showError('visaTypeError', 'Please select a visa type');
-                return;
-            }
-            if (!country) {
-                showError('countryError', 'Please select a destination country');
-                return;
-            }
-
-            // Show loading state
-            loadingDiv.style.display = 'block';
-            resultDiv.style.display = 'none';
-            successBanner.style.display = 'none';
-
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            // Check visa status
-            const visaInfo = visaDatabase[refNumber] || { status: 'pending', message: 'Application status: Pending verification.' };
-
-            // Hide loading
-            loadingDiv.style.display = 'none';
-
-            // Display result
-            displayResult(visaInfo, refNumber, fullName, email, phone, visaType, country);
-
-            // Send data to backend (this will work once backend is set up)
-            sendLeadData({
-                refNumber,
-                fullName,
-                email,
-                phone,
-                visaType,
-                country,
-                status: visaInfo.status,
-                timestamp: new Date().toISOString()
-            });
-
-            // Show success banner
-            successBanner.style.display = 'block';
-            setTimeout(() => {
-                successBanner.style.display = 'none';
-            }, 5000);
-        });
-
-        function isValidEmail(email) {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        }
-
-        function showError(elementId, message) {
-            const errorElement = document.getElementById(elementId);
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-        }
-
-        function displayResult(visaInfo, refNumber, fullName, email, phone, visaType, country) {
-            const statusEmoji = visaInfo.status === 'approved' ? '✓' : visaInfo.status === 'pending' ? '⏳' : '✗';
-            const statusText = visaInfo.status === 'approved' ? 'APPROVED' : visaInfo.status === 'pending' ? 'PENDING' : 'DENIED';
-
-            const countryName = document.getElementById('country').options[document.getElementById('country').selectedIndex].text;
-            const visaTypeName = document.getElementById('visaType').options[document.getElementById('visaType').selectedIndex].text;
-
-            resultDiv.innerHTML = `
-                <div class="result-title">
-                    ${statusEmoji} Status: ${statusText}
-                </div>
-                <div class="result-message">
-                    <strong>${visaInfo.message}</strong><br><br>
-                    <strong>Details:</strong><br>
-                    Reference: ${refNumber}<br>
-                    Name: ${fullName}<br>
-                    Visa Type: ${visaTypeName}<br>
-                    Country: ${countryName}<br>
-                    Email: ${email}<br>
-                    Phone: ${phone}
-                </div>
-                <div class="result-date">
-                    Checked on: ${new Date().toLocaleString()}
-                </div>
-            `;
-
-            resultDiv.className = `result ${visaInfo.status}`;
-            resultDiv.style.display = 'block';
-
-            // Scroll to result
-            resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        function sendLeadData(data) {
-            // For MVP, log to console and localStorage
-            console.log('Lead Data:', data);
             
-            // Store in localStorage
-            const leads = JSON.parse(localStorage.getItem('visa_leads') || '[]');
-            leads.push(data);
-            localStorage.setItem('visa_leads', JSON.stringify(leads));
-
-            // In production, this will send to backend via API
-            // fetch('/api/leads', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(data)
-            // });
-        }
-
-        // Show stored leads (for testing - remove in production)
-        console.log('💾 Stored Leads:', JSON.parse(localStorage.getItem('visa_leads') || '[]'));
+            const refNumber = document.getElementById('refNumber').value;
+            const visaInfo = visaDatabase[refNumber] || { status: 'pending', message: 'Application status: Pending verification.' };
+            
+            const resultDiv = document.getElementById('result');
+            const statusText = visaInfo.status === 'approved' ? 'APPROVED ✓' : visaInfo.status === 'pending' ? 'PENDING ⏳' : 'DENIED ✗';
+            
+            resultDiv.innerHTML = '<div class="result-title">' + statusText + '</div><div class="result-message">' + visaInfo.message + '</div>';
+            resultDiv.className = 'result ' + visaInfo.status;
+            resultDiv.style.display = 'block';
+            
+            document.getElementById('successBanner').style.display = 'block';
+            setTimeout(() => document.getElementById('successBanner').style.display = 'none', 5000);
+        });
     </script>
 </body>
 </html>
