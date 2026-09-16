@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visa Eligibility Checker - London MCS Consultants</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            background: #f8f9fa;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            padding: 60px 40px;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 60px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 700;
+            color: #7c3aed;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .form-section {
+            margin-bottom: 50px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        select {
+            padding: 14px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+            color: #333;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 40px;
+        }
+
+        select:hover {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-check {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: fit-content;
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-check:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .btn-check:active {
+            transform: translateY(0);
+        }
+
+        .btn-check::after {
+            content: '→';
+            font-size: 18px;
+        }
+
+        .btn-reset {
+            background: white;
+            color: #7c3aed;
+            border: 2px solid #7c3aed;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background: #f3f0ff;
+        }
+
+        .results {
+            margin-top: 50px;
+            display: none;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 30px;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .requirement-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .requirement-card:hover {
+            border-color: #7c3aed;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.15);
+        }
+
+        .requirement-icon {
+            width: 50px;
+            height: 50px;
+            background: #f3f0ff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .requirement-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+        }
+
+        .requirement-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .requirement-list {
+            list-style: none;
+            margin-top: 12px;
+            padding-left: 0;
+        }
+
+        .requirement-list li {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            padding-left: 24px;
+            position: relative;
+        }
+
+        .requirement-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #7c3aed;
+            font-weight: bold;
+        }
+
+        .eligibility-status {
+            background: linear-gradient(135deg, #f3f0ff 0%, #ede9fe 100%);
+            border: 2px solid #7c3aed;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: #7c3aed;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .status-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .status-message {
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            border-radius: 12px;
+            padding: 32px;
+            color: white;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .cta-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .cta-description {
+            font-size: 15px;
+            opacity: 0.95;
+            margin-bottom: 20px;
+        }
+
+        .btn-cta {
+            background: white;
+            color: #7c3aed;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-cta:hover {
+            transform: scale(1.05);
+        }
+
+        .info-banner {
+            background: #f0f9ff;
+            border: 2px solid #e0f2fe;
+            border-radius: 10px;
+            padding: 16px;
+            margin-top: 30px;
+            font-size: 14px;
+            color: #0369a1;
+            display: flex;
+            gap: 12px;
+        }
+
+        .info-banner::before {
+            content: 'ℹ️';
+            flex-shrink: 0;
+        }
+
+        .disclaimer {
+            font-size: 12px;
+            color: #999;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #f0f0f0;
+            text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-title {
+                font-size: 22px;
+            }
+
+            .requirements-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            border: 4px solid #f0f0f0;
+            border-top: 4px solid #7c3aed;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">FREE ELIGIBILITY TOOL</div>
+            <div class="subtitle">No account required • Get instant results</div>
+        </div>
+
+        <div class="form-section">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="nationality">Passport Nationality</label>
+                    <select id="nationality" name="nationality" required>
+                        <option value="">Select your country</option>
+                        <option value="india">India</option>
+                        <option value="srilanka">Sri Lanka</option>
+                        <option value="pakistan">Pakistan</option>
+                        <option value="bangladesh">Bangladesh</option>
+                        <option value="nepal">Nepal</option>
+                        <option value="philippines">Philippines</option>
+                        <option value="thailand">Thailand</option>
+                        <option value="vietnam">Vietnam</option>
+                        <option value="indonesia">Indonesia</option>
+                        <option value="china">China</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="destination">Destination</label>
+                    <select id="destination" name="destination" required>
+                        <option value="">Select destination</option>
+                        <option value="uk">United Kingdom</option>
+                        <option value="usa">United States</option>
+                        <option value="canada">Canada</option>
+                        <option value="australia">Australia</option>
+                        <option value="newzealand">New Zealand</option>
+                        <option value="france">France</option>
+                        <option value="germany">Germany</option>
+                        <option value="italy">Italy</option>
+                        <option value="spain">Spain</option>
+                        <option value="switzerland">Switzerland</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="purpose">Travel Purpose</label>
+                    <select id="purpose" name="purpose" required>
+                        <option value="">Select purpose</option>
+                        <option value="tourism">Tourism</option>
+                        <option value="business">Business</option>
+                        <option value="student">Student Visa</option>
+                        <option value="work">Work Visa</option>
+                        <option value="residence">Residence/Settlement</option>
+                        <option value="family">Family Visit</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="btn-check" onclick="checkEligibility()">Check Requirements</button>
+                <button class="btn-reset" onclick="resetForm()">Reset</button>
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <div class="eligibility-status" id="statusCard">
+                <span class="status-badge">ELIGIBILITY STATUS</span>
+                <div class="status-title" id="statusTitle">You are eligible</div>
+                <div class="status-message" id="statusMessage">Based on your inputs, you meet the basic requirements for this visa.</div>
+            </div>
+
+            <div class="results-title">Visa Requirements</div>
+            <div class="requirements-grid" id="requirementsGrid"></div>
+
+            <div class="info-banner">
+                Processing times vary. Contact us for a free consultation to accelerate your application.
+            </div>
+
+            <div class="cta-section">
+                <div class="cta-title">Ready to Apply?</div>
+                <div class="cta-description">Get personalized guidance from our visa experts. Book your free consultation today!</div>
+                <button class="btn-cta" onclick="bookConsultation()">Book Free Consultation</button>
+            </div>
+        </div>
+
+        <div class="disclaimer">
+            This tool provides general information and is not a substitute for professional visa consulting. For accurate advice, please contact London MCS Consultants.
+        </div>
+    </div>
+
+    <script>
+        // Visa Requirements Database
+        const visaRequirements = {
+            'uk-tourism': {
+                title: 'Tourist Visa Requirements (UK)',
+                eligible: true,
+                message: 'Most nationalities are eligible for UK tourist visas. Processing typically takes 3-15 days.',
+                requirements: [
+                    { icon: '📝', title: 'Valid Passport', desc: 'Must be valid for 6 months beyond your stay' },
+                    { icon: '💰', title: 'Proof of Funds', desc: '₹1.5-2 lakhs (approximately £1,500-2,000)' },
+                    { icon: '📄', title: 'Return Ticket', desc: 'Confirmed return flight or travel plans' },
+                    { icon: '🏢', title: 'Accommodation', desc: 'Hotel bookings or invitation letter' },
+                    { icon: '📋', title: 'Travel Itinerary', desc: 'Detailed plans for your stay' },
+                    { icon: '💳', title: 'Visa Fee', desc: '£100-200 depending on processing speed' }
+                ]
+            },
+            'uk-student': {
+                title: 'Student Visa Requirements (UK)',
+                eligible: true,
+                message: 'Student visas are available for accepted applicants. Processing typically takes 4-8 weeks.',
+                requirements: [
+                    { icon: '🎓', title: 'University Acceptance', desc: 'Acceptance letter from a UK institution' },
+                    { icon: '🏦', title: 'CAS Letter', desc: 'Confirmation of Acceptance for Studies' },
+                    { icon: '💰', title: 'Financial Evidence', desc: '₹20-30 lakhs for tuition and living costs' },
+                    { icon: '🗣️', title: 'English Language', desc: 'IELTS 5.5-6.5 or equivalent' },
+                    { icon: '📝', title: 'Valid Passport', desc: 'Valid for entire course duration' },
+                    { icon: '🏥', title: 'Health Insurance', desc: 'International student health plan' }
+                ]
+            },
+            'uk-work': {
+                title: 'Work Visa Requirements (UK)',
+                eligible: true,
+                message: 'Work visas require a job offer from a UK employer. Processing takes 4-6 weeks.',
+                requirements: [
+                    { icon: '💼', title: 'Job Offer', desc: 'Confirmed employment contract' },
+                    { icon: '🏢', title: 'Sponsorship', desc: 'Licensed UK employer sponsorship' },
+                    { icon: '💷', title: 'Salary Threshold', desc: '£25,600+ per annum (varies by role)' },
+                    { icon: '📚', title: 'Qualifications', desc: 'Relevant degree or experience' },
+                    { icon: '🗣️', title: 'English Language', desc: 'B1 level English proficiency' },
+                    { icon: '💰', title: 'Visa Fee', desc: '£719-1,035 depending on duration' }
+                ]
+            },
+            'uk-business': {
+                title: 'Business Visa Requirements (UK)',
+                eligible: true,
+                message: 'Business visitors can stay up to 6 months. Tourist visa requirements apply.',
+                requirements: [
+                    { icon: '📄', title: 'Business Documents', desc: 'Company registration & business details' },
+                    { icon: '💰', title: 'Proof of Funds', desc: '₹2-3 lakhs for business visit' },
+                    { icon: '📧', title: 'Invitation Letter', desc: 'From UK company you\'re visiting' },
+                    { icon: '📋', title: 'Business Itinerary', desc: 'Meetings and events planned' },
+                    { icon: '🏢', title: 'Employment Letter', desc: 'From your employer' },
+                    { icon: '✈️', title: 'Return Ticket', desc: 'Confirmed return travel' }
+                ]
+            },
+            'usa-tourism': {
+                title: 'Tourist Visa Requirements (USA)',
+                eligible: true,
+                message: 'B1/B2 tourist visa is the standard. Processing can take 5-7 weeks.',
+                requirements: [
+                    { icon: '📝', title: 'Valid Passport', desc: 'Valid for 6 months minimum' },
+                    { icon: '🏦', title: 'Financial Proof', desc: '₹3-5 lakhs for stay duration' },
+                    { icon: '🏠', title: 'Ties to Home', desc: 'Property, employment, family documents' },
+                    { icon: '🎫', title: 'DS-160 Form', desc: 'Completed online application' },
+                    { icon: '📸', title: 'Photo & Documents', desc: 'Recent passport-sized photo' },
+                    { icon: '🗳️', title: 'Interview', desc: 'In-person at US Embassy/Consulate' }
+                ]
+            },
+            'usa-student': {
+                title: 'Student Visa Requirements (USA)',
+                eligible: true,
+                message: 'F-1 student visa requires university acceptance. Processing 6-12 weeks.',
+                requirements: [
+                    { icon: '🎓', title: 'University Admission', desc: 'Acceptance from accredited US institution' },
+                    { icon: '📄', title: 'I-20 Form', desc: 'From your university' },
+                    { icon: '💰', title: 'Financial Support', desc: '₹30-50 lakhs for full study period' },
+                    { icon: '🗣️', title: 'English Test', desc: 'TOEFL 80+ or SAT/GRE scores' },
+                    { icon: '🏥', title: 'Medical Exam', desc: 'I-693 medical examination' },
+                    { icon: '🗳️', title: 'Visa Interview', desc: 'At US Embassy/Consulate' }
+                ]
+            },
+            'usa-work': {
+                title: 'Work Visa Requirements (USA)',
+                eligible: true,
+                message: 'H-1B, L-1, O-1 visas available. Processing 3-6 months.',
+                requirements: [
+                    { icon: '💼', title: 'Job Offer', desc: 'From US employer (usually specialty jobs)' },
+                    { icon: '📋', title: 'Labor Certification', desc: 'PERM or expedited process' },
+                    { icon: '🎓', title: 'Qualifications', desc: 'Bachelor\'s degree or equivalent' },
+                    { icon: '💷', title: 'Prevailing Wage', desc: 'Employer pays competitive salary' },
+                    { icon: '📄', title: 'I-129 Form', desc: 'Petition filed by employer' },
+                    { icon: '🏦', title: 'Financial Support', desc: 'Employer sponsorship agreement' }
+                ]
+            },
+            'australia-tourism': {
+                title: 'Tourist Visa Requirements (Australia)',
+                eligible: true,
+                message: 'ETA or standard tourist visa. ETA can be processed online (1-7 days).',
+                requirements: [
+                    { icon: '📝', title: 'Valid Passport', desc: 'Valid for stay duration + 6 months' },
+                    { icon: '🏦', title: 'Financial Proof', desc: '₹2-3 lakhs for stay' },
+                    { icon: '📋', title: 'Travel Itinerary', desc: 'Detailed plans for Australia' },
+                    { icon: '🏠', title: 'Accommodation', desc: 'Hotel or accommodation bookings' },
+                    { icon: '✈️', title: 'Return Ticket', desc: 'Confirmed return travel date' },
+                    { icon: '🏥', title: 'Health Declaration', desc: 'Health assessment if required' }
+                ]
+            },
+            'canada-tourism': {
+                title: 'Tourist Visa Requirements (Canada)',
+                eligible: true,
+                message: 'Most nationalities need eTA. Processing online (instant-minutes).',
+                requirements: [
+                    { icon: '📝', title: 'Valid Passport', desc: 'Valid for stay duration' },
+                    { icon: '💰', title: 'Proof of Funds', desc: '₹2-3 lakhs (CAD $2,500-3,500)' },
+                    { icon: '🏠', title: 'Ties to Home Country', desc: 'Employment, family, property' },
+                    { icon: '🏢', title: 'Job Letter', desc: 'From employer (optional but helpful)' },
+                    { icon: '✈️', title: 'Return Ticket', desc: 'Confirmed onward travel' },
+                    { icon: '📋', title: 'Travel Plans', desc: 'Itinerary and activities' }
+                ]
+            },
+            'default': {
+                title: 'Visa Requirements',
+                eligible: true,
+                message: 'Based on your selection, here are the typical requirements:',
+                requirements: [
+                    { icon: '📝', title: 'Valid Passport', desc: 'Passport valid for intended period' },
+                    { icon: '💰', title: 'Proof of Funds', desc: 'Financial capacity to support stay' },
+                    { icon: '📋', title: 'Purpose Letter', desc: 'Explanation of visit purpose' },
+                    { icon: '🏠', title: 'Ties to Home', desc: 'Evidence of return intention' },
+                    { icon: '✈️', title: 'Return Ticket', desc: 'Confirmed return travel plan' },
+                    { icon: '📄', title: 'Supporting Docs', desc: 'Supporting documents specific to purpose' }
+                ]
+            }
+        };
+
+        function getRequirementsKey(destination, purpose) {
+            const key = `${destination}-${purpose}`.toLowerCase();
+            return visaRequirements[key] || visaRequirements['default'];
+        }
+
+        function checkEligibility() {
+            const nationality = document.getElementById('nationality').value;
+            const destination = document.getElementById('destination').value;
+            const purpose = document.getElementById('purpose').value;
+
+            if (!nationality || !destination || !purpose) {
+                alert('Please select all options');
+                return;
+            }
+
+            // Show loading state
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="loading"><div class="spinner"></div><p>Checking your eligibility...</p></div>';
+            resultsDiv.style.display = 'block';
+
+            // Simulate processing
+            setTimeout(() => {
+                displayResults(destination, purpose);
+                resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 1500);
+        }
+
+        function displayResults(destination, purpose) {
+            const requirements = getRequirementsKey(destination, purpose);
+            
+            // Update status card
+            const statusCard = document.getElementById('statusCard');
+            document.getElementById('statusTitle').textContent = requirements.title;
+            document.getElementById('statusMessage').textContent = requirements.message;
+
+            // Build requirements grid
+            const grid = document.getElementById('requirementsGrid');
+            grid.innerHTML = '';
+
+            requirements.requirements.forEach(req => {
+                const card = document.createElement('div');
+                card.className = 'requirement-card';
+                card.innerHTML = `
+                    <div class="requirement-icon">${req.icon}</div>
+                    <div class="requirement-title">${req.title}</div>
+                    <div class="requirement-description">${req.desc}</div>
+                `;
+                grid.appendChild(card);
+            });
+
+            // Show results with animation
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function resetForm() {
+            document.getElementById('nationality').value = '';
+            document.getElementById('destination').value = '';
+            document.getElementById('purpose').value = '';
+            document.getElementById('results').style.display = 'none';
+        }
+
+        function bookConsultation() {
+            const destination = document.getElementById('destination').value;
+            const purpose = document.getElementById('purpose').value;
+            
+            if (!destination || !purpose) {
+                alert('Please use the checker first');
+                return;
+            }
+
+            // Open booking modal or redirect
+            alert('Thank you! Our visa experts will contact you shortly to discuss your ' + purpose + ' visa to ' + destination + '.');
+            // In production, this would open a booking form or redirect to booking page
+        }
+
+        // Allow pressing Enter to check eligibility
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkEligibility();
+            }
+        });
+    </script>
+</body>
+</html>
